@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#071525">
+  <meta name="description" content="PADEL CLASH - challenge the CPU in a padel match.">
+  <title>PADEL CLASH 🎾</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">P<span>✦</span></div>
+        <div>
+          <h1>PADEL <span>CLASH</span></h1>
+          <p>THE COURT IS YOURS</p>
+        </div>
+      </div>
+      <div class="live-badge"><span></span> MATCH ARENA</div>
+    </header>
+
+    <section class="match-panel">
+      <div class="player-card">
+        <div class="avatar player-avatar">P1</div>
+        <div class="player-info">
+          <span class="small-label">PLAYER 1</span>
+          <strong id="playerNameDisplay">PLAYER 1</strong>
+          <span class="player-status">YOU</span>
+        </div>
+        <div class="score" id="playerScore">0</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="player-card opponent-card">
+        <div class="score" id="cpuScore">0</div>
+        <div class="player-info">
+          <span class="small-label">PLAYER 2</span><strong>CPU RIVAL</strong>
+          <span class="player-status">AI PLAYER</span>
+        </div>
+        <div class="avatar cpu-avatar">C</div>
+      </div>
+    </section>
+
+    <section class="arena">
+      <canvas id="gameCanvas" aria-label="Padel game arena"></canvas>
+      <div class="arena-top">
+        <div class="level-chip"><span class="level-dot"></span><span id="levelLabel">EASY MODE</span></div>
+        <div class="rally-chip">RALLY <strong id="rallyCount">0</strong></div>
+      </div>
+      <button id="pauseBtn" class="pause-btn hidden" type="button" aria-label="Pause match">Ⅱ PAUSE</button>
+
+      <div class="message-overlay" id="messageOverlay">
+        <div class="message-card">
+          <div class="message-icon" id="messageIcon">🎾</div>
+          <p class="eyebrow" id="messageEyebrow">WELCOME TO THE ARENA</p>
+          <h2 id="messageTitle">READY TO<br><span>CLASH?</span></h2>
+          <p class="message-description" id="messageDescription">Customize your player, choose a difficulty, and start
+            the match.</p>
+
+          <label class="difficulty-label" for="playerNameInput">PLAYER 1 NAME</label>
+          <input id="playerNameInput" class="name-input" type="text" maxlength="16" value="PLAYER 1"
+            placeholder="Enter your name" autocomplete="nickname">
+
+          <label class="difficulty-label" for="difficulty">CHOOSE YOUR LEVEL</label>
+          <select id="difficulty">
+            <option value="easy">EASY — Beginner</option>
+            <option value="medium">MEDIUM — Rally Ready</option>
+            <option value="hard">HARD — Pro Challenge</option>
+            <option value="extreme">EXTREME — Elite</option>
+            <option value="impossible">IMPOSSIBLE — Legend</option>
+          </select>
+          <button class="primary-btn" id="startBtn">START MATCH <span>↗</span></button>
+          <p class="audio-note">Sound starts after you press Start Match.</p>
+        </div>
+      </div>
+      <div class="point-banner" id="pointBanner">POINT!</div>
+    </section>
+
+    <section class="controls-panel">
+      <div class="control-copy">
+        <span class="control-kicker">YOUR CONTROLS</span>
+        <h3>Move fast. <span>Hit hard.</span></h3>
+        <p>Position yourself and time your shot.</p>
+      </div>
+      <div class="desktop-hints">
+        <div class="key-hint"><kbd>←</kbd><kbd>→</kbd><span>MOVE</span></div>
+        <div class="key-hint"><kbd>↑</kbd><kbd>↓</kbd><span>DEPTH</span></div>
+        <div class="key-hint"><kbd>SPACE</kbd><span>HIT BALL</span></div>
+      </div>
+      <div class="mobile-controls">
+        <div class="move-pad">
+          <button class="move-btn" data-move="left" aria-label="Move left">←</button>
+          <button class="move-btn" data-move="up" aria-label="Move forward">↑</button>
+          <button class="move-btn" data-move="down" aria-label="Move backward">↓</button>
+          <button class="move-btn" data-move="right" aria-label="Move right">→</button>
+        </div>
+        <button class="hit-btn" id="hitBtn"><span>🎾</span> HIT!</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>PADEL CLASH <span class="footer-dot">●</span> ARCADE EDITION</span>
+      <button id="restartBtn">↻ RESTART MATCH</button>
+    </footer>
+  </main>
+
+  <div id="pauseMenu" class="pause-menu hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+    <div class="pause-card">
+      <h2 id="pauseTitle">GAME PAUSED</h2>
+      <p>Take a breath, champion.</p>
+      <div id="pauseActions">
+        <button id="resumeBtn" class="menu-primary">▶ RESUME GAME</button>
+        <button id="pauseRestartBtn">↻ RESTART GAME</button>
+        <button id="volumeBtn">🔊 VOLUME SETTINGS</button>
+        <button id="exitBtn" class="danger-btn">↩ EXIT GAME</button>
+      </div>
+      <div id="volumeSettings" class="volume-settings hidden">
+        <h3>VOLUME SETTINGS</h3>
+        <label>Master Volume <output id="masterValue">70%</output><input id="masterVolume" type="range" min="0"
+            max="100" value="70"></label>
+        <label>Music Volume <output id="musicValue">35%</output><input id="musicVolume" type="range" min="0" max="100"
+            value="35"></label>
+        <label>Ball Sound <output id="ballValue">80%</output><input id="ballVolume" type="range" min="0" max="100"
+            value="80"></label>
+        <label>Ambience <output id="ambienceValue">20%</output><input id="crowdVolume" type="range" min="0" max="100"
+            value="20"></label>
+        <button id="muteBtn">🔇 MUTE ALL</button>
+        <button id="backToPauseBtn">← BACK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
